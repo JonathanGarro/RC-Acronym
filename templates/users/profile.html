@@ -1,0 +1,17 @@
+echo '{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} - Profile{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1>Profile</h1>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ u_form|crispy }}
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}' > templates/users/profile.html

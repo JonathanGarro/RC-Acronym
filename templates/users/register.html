@@ -1,0 +1,20 @@
+echo '{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} - Register{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1>Register</h1>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+      <div class="mt-3">
+        <p>Already have an account? <a href="{% url "login" %}">Login here</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}' > templates/users/register.html
