@@ -1,0 +1,17 @@
+echo '{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} - Export Acronyms{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1>Export Acronyms</h1>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Export to CSV</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}' > templates/acronyms/export.html

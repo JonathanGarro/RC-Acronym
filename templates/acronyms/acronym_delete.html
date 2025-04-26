@@ -1,0 +1,17 @@
+echo '{% extends "base.html" %}
+{% block title %} - Delete Acronym{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1>Confirm Deletion</h1>
+    </div>
+    <div class="card-body">
+      <p>Are you sure you want to delete the acronym "{{ object.acronym }} - {{ object.definition }}"?</p>
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url "acronym-detail" object.id %}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}' > templates/acronyms/acronym_confirm_delete.html

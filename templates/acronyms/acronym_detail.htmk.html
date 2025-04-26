@@ -1,0 +1,24 @@
+echo '{% extends "base.html" %}
+{% block title %} - {{ acronym.acronym }}{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1>{{ acronym.acronym }}</h1>
+    </div>
+    <div class="card-body">
+      <h3>{{ acronym.definition }}</h3>
+      <p>{{ acronym.description }}</p>
+      {% if acronym.category %}
+        <p><strong>Category:</strong> {{ acronym.category }}</p>
+      {% endif %}
+      <p><strong>Added by:</strong> {{ acronym.created_by }}</p>
+      <p><strong>Added on:</strong> {{ acronym.created_at|date:"F d, Y" }}</p>
+      
+      {% if user == acronym.created_by or user.is_staff %}
+        <a href="{% url "acronym-update" acronym.id %}" class="btn btn-secondary">Edit</a>
+        <a href="{% url "acronym-delete" acronym.id %}" class="btn btn-danger">Delete</a>
+      {% endif %}
+      <a href="{% url "acronym-list" %}" class="btn btn-primary">Back to List</a>
+    </div>
+  </div>
+{% endblock %}' > templates/acronyms/acronym_detail.html
