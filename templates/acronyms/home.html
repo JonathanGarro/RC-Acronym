@@ -2,75 +2,68 @@
 
 {% block title %} - Home{% endblock %}
 
+{% block styles %}
+<style>
+    .search-container {
+        margin-top: 2rem;
+    }
+    .nav-pills .nav-link {
+        border-radius: 50rem;
+        padding: 0.5rem 1.5rem;
+    }
+    .nav-pills .nav-link.active {
+        background-color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="jumbotron p-5 rounded bg-light">
-                <h1 class="display-4">Welcome to Acronym Manager</h1>
-                <p class="lead">A simple way to manage, search, and share acronyms</p>
-                <hr class="my-4">
-                <p>Search for acronyms, add your own, and keep track of your collection.</p>
-                {% if not user.is_authenticated %}
-                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
-                {% else %}
-                <a class="btn btn-primary btn-lg" href="{% url 'acronym-create' %}" role="button">Add an Acronym</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    <!-- React app container -->
+    <div id="react-app"></div>
 
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <form method="GET" action="{% url 'home' %}" class="mb-4">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control form-control-lg" placeholder="Search for acronyms or definitions..." value="{{ query|default:'' }}">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <!-- Display search results if query exists -->
     {% if query %}
-        <h2 class="mb-4">Search Results for "{{ query }}"</h2>
-    {% else %}
-        <h2 class="mb-4">Recently Added Acronyms</h2>
-    {% endif %}
+        <h2 class="mb-4 mt-5">Search Results for "{{ query }}"</h2>
 
-    {% if acronyms %}
-        <div class="row">
-            {% for acronym in acronyms %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card acronym-card h-100">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="card-title mb-0">{{ acronym.acronym }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="card-subtitle mb-2 text-muted">{{ acronym.definition }}</h6>
-                            {% if acronym.description %}
-                                <p class="card-text">{{ acronym.description|truncatewords:20 }}</p>
-                            {% endif %}
-                            {% if acronym.category %}
-                                <span class="badge bg-secondary">{{ acronym.category }}</span>
-                            {% endif %}
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'acronym-detail' acronym.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+        {% if acronyms %}
+            <div class="row">
+                {% for acronym in acronyms %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card acronym-card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">{{ acronym.acronym }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">{{ acronym.definition }}</h6>
+                                {% if acronym.description %}
+                                    <p class="card-text">{{ acronym.description|truncatewords:20 }}</p>
+                                {% endif %}
+                                {% if acronym.category %}
+                                    <span class="badge bg-secondary">{{ acronym.category }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+                                <a href="{% url 'acronym-detail' acronym.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-info">
-            {% if query %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
                 <p>No acronyms found matching your search.</p>
-            {% else %}
-                <p>No acronyms have been added yet.</p>
-            {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="mt-4 text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Search</a>
+            <a href="{% url 'acronym-list' %}" class="btn btn-outline-primary ml-2">View All Acronyms</a>
         </div>
     {% endif %}
+{% endblock %}
 
-    <div class="mt-4 text-center">
-        <a href="{% url 'acronym-list' %}" class="btn btn-outline-primary">View All Acronyms</a>
-    </div>
+{% block scripts %}
+    <!-- Include the React bundled JavaScript -->
+    {% load static %}
+    <script src="{% static 'frontend/main.js' %}"></script>
 {% endblock %}
